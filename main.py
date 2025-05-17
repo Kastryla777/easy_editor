@@ -56,6 +56,11 @@ def show_image():
 ui.images_list.currentItemChanged.connect(show_image)
 
 ui.bw_btn.clicked.connect(ip.makeBW)
+ui.left_btn.clicked.connect(ip.turnleft)
+ui.right_btn.clicked.connect(ip.turnright)
+ui.mirror_btn.clicked.connect(ip.makeMirror)
+ui.sharp_btn.clicked.connect(ip.makeSharp)
+
 
 win.show()
 app.exec()

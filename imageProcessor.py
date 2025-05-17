@@ -1,4 +1,4 @@
-from PIL import Image 
+from PIL import Image, ImageFilter
 from ui import Ui_MainWindow
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
@@ -36,16 +36,39 @@ class ImageProcessor():
             self.ui.label.show()
 
 
-    def makeBW(self):
-        bw = self.image.convert("L")
-
+    def save(self, prefix):
         
-        self.image_path = os.path.join(self.workdir, self.modified_folder, "bw_"+self.filename)
+        self.image_path = os.path.join(self.workdir, self.modified_folder, prefix+self.filename)
 
         sub_path = os.path.join(self.workdir, self.modified_folder)
         if not os.path.exists(sub_path):
             os.mkdir(sub_path)
 
-        bw.save(self.image_path)
+        self.image.save(self.image_path)
 
+    def makeBW(self):
+        self.image = self.image.convert("L")
+        self.save("bw_")
+        
+        
+        self.showChoosenImage()
+
+    def turnleft(self):
+        self.image = self.image.transpose(Image.Transpose.ROTATE_90)
+        self.save("left_")
+        self.showChoosenImage()
+
+    def turnright(self):
+        self.image = self.image.transpose(Image.Transpose.ROTATE_270)
+        self.save("right_")
+        self.showChoosenImage()
+
+    def makeMirror(self):
+        self.image = self.image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        self.save("mirror_")
+        self.showChoosenImage()
+
+    def makeSharp(self):
+        self.image = self.image.filter(ImageFilter.SHARPEN)
+        self.save("sharp_")
         self.showChoosenImage()
